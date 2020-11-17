@@ -16,7 +16,6 @@ html {
 
 .wrap {
   display: grid;
-  grid-template-rows: 5% 90% 5%;
 
   background-image: url("../assets/fondo.jpg");
   background-attachment: fixed;
@@ -119,5 +118,15 @@ main {
   }
   .header {
     font-size: 0.6rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .wrap {
+    min-height: 100vh;
+  }
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
