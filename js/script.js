@@ -6,5 +6,5 @@ const $wrap = d.querySelector(".wrap");
 
 d.addEventListener("DOMContentLoaded", (e) => {
   $wrap.insertAdjacentElement("afterbegin", header());
-  $wrap.insertAdjacentElement("afterend", footer());
+  $wrap.insertAdjacentElement("beforeend", footer());
 });
