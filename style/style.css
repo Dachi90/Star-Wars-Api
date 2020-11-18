@@ -15,12 +15,12 @@ html {
 }
 
 .wrap {
-  display: grid;
-
   background-image: url("../assets/fondo.jpg");
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
+  min-height: 100vh;
+  display: grid;
 }
 
 .header {
@@ -32,7 +32,7 @@ html {
 }
 
 .logo {
-  width: 10%;
+  width: 2rem;
 
   border-radius: 50%;
   cursor: pointer;
@@ -48,7 +48,7 @@ html {
 
 main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 1rem;
   padding: 1.5rem;
   margin-bottom: 0.5rem;
@@ -101,6 +101,7 @@ main {
   background-color: rgba(44, 44, 44, 0.5);
   text-align: center;
   padding: 1rem;
+  grid-row: 4/4;
 }
 
 .footer a {
@@ -112,21 +113,13 @@ main {
 }
 
 @media (max-width: 600px) {
-  main {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
   .header {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
 }
 
-@media (min-width: 1280px) {
-  .wrap {
-    min-height: 100vh;
-  }
+@media (min-width: 920px) {
   main {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
 }
