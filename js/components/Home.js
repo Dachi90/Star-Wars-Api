@@ -5,7 +5,7 @@ export function Home() {
   $home.innerHTML = `
   
   
-  <a href="#/characters" > <img src="../assets/characters.jpg"/> <p>Characters</p> </a>
+  <a href="#/people" > <img src="../assets/characters.jpg"/> <p>Characters</p> </a>
   <a href="#/planets" > <img src="../assets/planets.jpg"/> <p>Planets</p> </a>
   <a href="#/films" > <img src="../assets/films.jpg"/> <p>Films</p> </a>
   <a href="#/spacies" > <img src="../assets/species.jpg"/> <p>Species</p> </a>

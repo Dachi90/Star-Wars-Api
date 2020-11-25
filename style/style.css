@@ -55,7 +55,7 @@ img {
 /* MAIN SECTION */
 
 .grid-fluid {
-  margin: 1rem auto;
+  margin: 1rem auto 0rem auto;
   max-width: 90%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -114,4 +114,20 @@ img {
 .people-list {
   display: flex;
   justify-content: space-evenly;
+}
+
+/* Buttons People Page */
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+  grid-column: 1/-1;
+}
+
+.button {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: rgba(202, 198, 198, 0.28);
+  color: white;
+  cursor: pointer;
 }

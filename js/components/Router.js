@@ -2,21 +2,46 @@ import api from "../helpers/sw_api.js";
 import { ajax } from "../helpers/ajax.js";
 import { Home } from "./Home.js";
 import { People } from "./People.js";
+import { Buttons } from "./Buttons.js";
+import { App } from "../app.js";
+let page = 1;
+function pages() {
+  document.addEventListener("click", (e) => {
+    let query = JSON.parse(localStorage.getItem("query"));
+    console.log(page);
+
+    if (e.target.matches(".forward") && query.next != null) {
+      page++;
+
+      App();
+    }
+    if (e.target.matches(".back") && query.previous != null) {
+      page--;
+      App();
+    }
+  });
+}
+document.addEventListener("DOMContenLoaded", pages());
 
 export async function Router() {
   const d = document,
     $main = d.getElementById("main");
 
   let { hash } = location;
-  console.log(hash);
+  //console.log(hash);
   $main.innerHTML = null;
 
   if (!hash || hash === "#/") {
     $main.appendChild(Home());
-  } else if (hash == "#/characters") {
+    page = 1;
+  } else if (hash == "#/people") {
     await ajax({
-      url: api.PEOPLE,
+      url: api.PEOPLE + api.PAGES + page,
       cbSuccess: async (people) => {
+        localStorage.setItem("query", JSON.stringify(people));
+        //console.log(localStorage.getItem("query"));
+        //console.log(people);
+        //console.log(page);
         let html = "";
         let people_planet = "";
 
@@ -38,7 +63,6 @@ export async function Router() {
               url: people.results[i].films[x],
               cbSuccess: (film) => {
                 //console.log(film.title);
-
                 let $li_people_films = document.createElement("li");
                 $li_people_films.textContent = film.title;
                 $ul_people_films.appendChild($li_people_films);
@@ -52,8 +76,11 @@ export async function Router() {
           //console.log($ul_people_films);
           html += People(people.results[i], people_planet, temp_List_Films);
         }
-
         $main.innerHTML = html;
+        $main.appendChild(Buttons());
+        /* d.addEventListener("click", (e) => {
+          pages(e, people);
+        }); */
       },
     });
   } else if (hash == "#/planets") {

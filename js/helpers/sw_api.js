@@ -5,7 +5,8 @@ const NAME = "swapi",
   FILMS = `${DOMAIN}/films`,
   SPECIES = `${DOMAIN}/species`,
   VEHICLES = `${DOMAIN}/vehicles`,
-  STARSHIPS = `${DOMAIN}/starships`;
+  STARSHIPS = `${DOMAIN}/starships`,
+  PAGES = `/?page=`;
 
 export default {
   NAME,
@@ -16,4 +17,5 @@ export default {
   SPECIES,
   VEHICLES,
   STARSHIPS,
+  PAGES,
 };
