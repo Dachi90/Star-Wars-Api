@@ -12,11 +12,12 @@ export function People(props, planet, films) {
         <li>Planet: ${planet}</li>
       </ul>
       <ul>
-        <li>Films:${films}</li>
+        <li>Height: ${height}</li>
+        <li>Skin: ${skin_color}</li>
+        <li>Eyes: ${eye_color}</li>
       </ul>
-      
-      
       </div>
+      <details class="details"><summary>Films</summary>${films}</details>
     </article>
     
   `;

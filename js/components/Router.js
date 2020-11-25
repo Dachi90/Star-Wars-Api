@@ -4,6 +4,7 @@ import { Home } from "./Home.js";
 import { People } from "./People.js";
 import { Buttons } from "./Buttons.js";
 import { App } from "../app.js";
+import { Planet } from "./Planet.js";
 let page = 1;
 function pages() {
   document.addEventListener("click", (e) => {
@@ -12,7 +13,6 @@ function pages() {
 
     if (e.target.matches(".forward") && query.next != null) {
       page++;
-
       App();
     }
     if (e.target.matches(".back") && query.previous != null) {
@@ -78,13 +78,57 @@ export async function Router() {
         }
         $main.innerHTML = html;
         $main.appendChild(Buttons());
-        /* d.addEventListener("click", (e) => {
-          pages(e, people);
-        }); */
       },
     });
   } else if (hash == "#/planets") {
-    $main.innerHTML = `<h3>Planets</h3>`;
+    let html = "";
+    ajax({
+      url: api.PLANETS + api.PAGES + page,
+      cbSuccess: async (planets) => {
+        console.log(planets.results);
+        localStorage.setItem("query", JSON.stringify(planets));
+
+        for (let i = 0; i < planets.results.length; i++) {
+          let $ul_planet_films = document.createElement("ul");
+          let $ul_planet_residents = document.createElement("ul");
+
+          for (let x = 0; x < planets.results[i].films.length; x++) {
+            //console.log(planets.results[i].films[x]);
+            await ajax({
+              url: planets.results[i].films[x],
+              cbSuccess: (film) => {
+                let $li_planet_films = document.createElement("li");
+                $li_planet_films.textContent = film.title;
+                $ul_planet_films.appendChild($li_planet_films);
+              },
+            });
+          }
+          let temp_film = document.createElement("div");
+          temp_film.appendChild($ul_planet_films);
+          let temp_List_Films = temp_film.innerHTML;
+
+          for (let y = 0; y < planets.results[i].residents.length; y++) {
+            //console.log(planets.results[i].residents[y]);
+            await ajax({
+              url: planets.results[i].residents[y],
+              cbSuccess: (resident) => {
+                console.log(resident);
+                let $li_planet_resident = document.createElement("li");
+                $li_planet_resident.textContent = resident.name;
+                $ul_planet_residents.appendChild($li_planet_resident);
+              },
+            });
+          }
+          let temp_resident = document.createElement("div");
+          temp_resident.appendChild($ul_planet_residents);
+          let temp_List_Residents = temp_resident.innerHTML;
+
+          html += Planet(planets.results[i], temp_List_Films, temp_List_Residents);
+        }
+        $main.innerHTML = html;
+        $main.appendChild(Buttons());
+      },
+    });
   } else if (hash == "#/films") {
     $main.innerHTML = `<h3>Films</h3>`;
   } else if (hash == "#/spacies") {
