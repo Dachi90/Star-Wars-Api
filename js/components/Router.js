@@ -5,23 +5,23 @@ import { People } from "./People.js";
 import { Buttons } from "./Buttons.js";
 import { App } from "../app.js";
 import { Planet } from "./Planet.js";
+import { Films } from "./Films.js";
 let page = 1;
-function pages() {
-  document.addEventListener("click", (e) => {
-    let query = JSON.parse(localStorage.getItem("query"));
-    console.log(page);
 
-    if (e.target.matches(".forward") && query.next != null) {
-      page++;
-      App();
-    }
-    if (e.target.matches(".back") && query.previous != null) {
-      page--;
-      App();
-    }
-  });
-}
-document.addEventListener("DOMContenLoaded", pages());
+document.addEventListener("click", (e) => {
+  let query = JSON.parse(localStorage.getItem("query"));
+  console.log(page);
+
+  if (e.target.matches(".forward") && query.next != null) {
+    page++;
+    App();
+  } else if (e.target.matches(".back") && query.previous != null) {
+    page--;
+    App();
+  } else {
+    return false;
+  }
+});
 
 export async function Router() {
   const d = document,
@@ -82,10 +82,10 @@ export async function Router() {
     });
   } else if (hash == "#/planets") {
     let html = "";
-    ajax({
+    await ajax({
       url: api.PLANETS + api.PAGES + page,
       cbSuccess: async (planets) => {
-        console.log(planets.results);
+        //console.log(planets.results);
         localStorage.setItem("query", JSON.stringify(planets));
 
         for (let i = 0; i < planets.results.length; i++) {
@@ -112,7 +112,7 @@ export async function Router() {
             await ajax({
               url: planets.results[i].residents[y],
               cbSuccess: (resident) => {
-                console.log(resident);
+                //console.log(resident);
                 let $li_planet_resident = document.createElement("li");
                 $li_planet_resident.textContent = resident.name;
                 $ul_planet_residents.appendChild($li_planet_resident);
@@ -130,7 +130,36 @@ export async function Router() {
       },
     });
   } else if (hash == "#/films") {
-    $main.innerHTML = `<h3>Films</h3>`;
+    let html = "";
+
+    await ajax({
+      url: api.FILMS + api.PAGES + page,
+      cbSuccess: async (films) => {
+        console.log(films.results);
+        //localStorage.setItem("query", JSON.stringify(films)); Solo hay 6 películas por lo cual no necesitaré hacer una paginación.
+        for (let i = 0; i < films.results.length; i++) {
+          let $ul_characters_films = document.createElement("ul");
+          for (let x = 0; x < films.results[i].characters.length; x++) {
+            //console.log(films.results[i].characters[x]);
+            await ajax({
+              url: films.results[i].characters[x],
+              cbSuccess: (character) => {
+                //console.log(character.name);
+                let $li_characters_films = d.createElement("li");
+                $li_characters_films.textContent = character.name;
+                $ul_characters_films.appendChild($li_characters_films);
+              },
+            });
+          }
+          let temp = d.createElement("div");
+          temp.appendChild($ul_characters_films);
+          let temp_characters_list = temp.innerHTML;
+          html += Films(films.results[i], temp_characters_list);
+        }
+        $main.innerHTML = html;
+        //$main.appendChild(Buttons());
+      },
+    });
   } else if (hash == "#/spacies") {
     $main.innerHTML = `<h3>Spacies</h3>`;
   } else if (hash == "#/vehicles") {

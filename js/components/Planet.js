@@ -2,10 +2,10 @@ export function Planet(props, films, people) {
   let { climate, diameter, gravity, name, population, rotation_period, terrain } = props;
 
   let $planet_card = `
-  <article class="people-card">
+  <article class="card">
       <h3 class="name">${name}</h3>
       
-      <div class="people-list">
+      <div class="list">
       <ul>
         <li>Population: ${population}</li>
         <li>Diameter: ${diameter}</li>
