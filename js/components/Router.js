@@ -6,6 +6,7 @@ import { Buttons } from "./Buttons.js";
 import { App } from "../app.js";
 import { Planet } from "./Planet.js";
 import { Films } from "./Films.js";
+import { Species } from "./Species.js";
 let page = 1;
 
 document.addEventListener("click", (e) => {
@@ -161,7 +162,57 @@ export async function Router() {
       },
     });
   } else if (hash == "#/spacies") {
-    $main.innerHTML = `<h3>Spacies</h3>`;
+    let html = "";
+
+    await ajax({
+      url: api.SPECIES + api.PAGES + page,
+      cbSuccess: async (species) => {
+        localStorage.setItem("query", JSON.stringify(species));
+        console.log(species.results);
+
+        for (let i = 0; i < species.results.length; i++) {
+          //console.log(species.results[i]);
+          let $ul_species_people = document.createElement("ul");
+          let $ul_species_films = document.createElement("ul");
+
+          for (let x = 0; x < species.results[i].films.length; x++) {
+            //console.log(species.results[i].films[x]);
+
+            await ajax({
+              url: species.results[i].films[x],
+              cbSuccess: (film) => {
+                let $li_species_films = document.createElement("li");
+                $li_species_films.textContent = film.title;
+                $ul_species_films.appendChild($li_species_films);
+              },
+            });
+          }
+          let temp_species_films = document.createElement("div");
+          temp_species_films.appendChild($ul_species_films);
+          let temp_species_films_list = temp_species_films.innerHTML;
+
+          for (let x = 0; x < species.results[i].people.length; x++) {
+            //console.log(species.results[i].films[x]);
+
+            await ajax({
+              url: species.results[i].people[x],
+              cbSuccess: (people) => {
+                let $li_species_people = document.createElement("li");
+                $li_species_people.textContent = people.name;
+                $ul_species_people.appendChild($li_species_people);
+              },
+            });
+          }
+          let temp_species_people = document.createElement("div");
+          temp_species_people.appendChild($ul_species_people);
+          let temp_species_people_list = temp_species_people.innerHTML;
+
+          html += Species(species.results[i], temp_species_films_list, temp_species_people_list);
+        }
+        $main.innerHTML = html;
+        $main.appendChild(Buttons());
+      },
+    });
   } else if (hash == "#/vehicles") {
     $main.innerHTML = `<h3>Vehicles</h3>`;
   } else if (hash == "#/starships") {
