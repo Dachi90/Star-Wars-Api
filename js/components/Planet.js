@@ -7,14 +7,14 @@ export function Planet(props, films, people) {
       
       <div class="list">
       <ul>
-        <li>Population: ${population}</li>
-        <li>Diameter: ${diameter}</li>
-        <li>Weather: ${climate}</li>
+        <li>Population: <span>${population}</span></li>
+        <li>Diameter: <span>${diameter}</span></li>
+        <li>Weather: <span>${climate}</span></li>
       </ul>
       <ul>
-        <li>Gravity: ${gravity}</li>
-        <li>Rotation: ${rotation_period}</li>
-        <li>Terrain: ${terrain}</li>
+        <li>Gravity: <span>${gravity}</span></li>
+        <li>Rotation: <span>${rotation_period}</span></li>
+        <li>Terrain: <span>${terrain}</span></li>
       </ul>
       </div>
       <details class="details"><summary>Films</summary>${films}</details>

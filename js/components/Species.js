@@ -7,13 +7,13 @@ export function Species(props, films, character) {
       
       <div class="list">
       <ul>
-        <li>Classification: ${classification}</li>
-        <li>Language: ${language}</li>
+        <li>Classification: <span>${classification}</span></li>
+        <li>Language: <span>${language}</span></li>
       </ul>
       <ul>
-        <li>Height: ${avarage_height}</li>
-        <li>Lifespan: ${avarage_lifespan}</li>
-        <li>Designation: ${designation}</li>
+        <li>Height: <span>${avarage_height}</span></li>
+        <li>Lifespan: <span>${avarage_lifespan}</span></li>
+        <li>Designation: <span>${designation}</span></li>
       </ul>
       </div>
       <details class="details"><summary>Films</summary>${films}</details>

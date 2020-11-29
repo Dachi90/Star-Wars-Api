@@ -7,14 +7,14 @@ export function People(props, planet, films) {
       
       <div class="list">
       <ul>
-        <li>Birthday: ${birth_year}</li>
-        <li>Gender: ${gender}</li>
-        <li>Planet: ${planet}</li>
+        <li>Birthday: <span>${birth_year}</span></li>
+        <li>Gender: <span>${gender}</span></li>
+        <li>Planet: <span>${planet}</span></li>
       </ul>
       <ul>
-        <li>Height: ${height}</li>
-        <li>Skin: ${skin_color}</li>
-        <li>Eyes: ${eye_color}</li>
+        <li>Height: <span>${height}</span></li>
+        <li>Skin: <span>${skin_color}</span></li>
+        <li>Eyes: <span>${eye_color}</span></li>
       </ul>
       </div>
       <details class="details"><summary>Films</summary>${films}</details>

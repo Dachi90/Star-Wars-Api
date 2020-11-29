@@ -7,13 +7,13 @@ export function Films(props, characters) {
       
       <div class="list">
       <ul>
-        <li>Episode: ${episode_id}</li>
-        <li>Release date: ${release_date}</li>
+        <li>Episode: <span>${episode_id}</span></li>
+        <li>Release date: <span>${release_date}</span></li>
         
       </ul>
       <ul>
-        <li>Director: ${director}</li>
-        <li>Producer: ${producer}</li>
+        <li>Director: <span>${director}</span></li>
+        <li>Producer: <span>${producer}</span></li>
       
       </ul>
       </div>

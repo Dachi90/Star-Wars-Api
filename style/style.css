@@ -118,6 +118,10 @@ img {
   display: flex;
   justify-content: space-evenly;
 }
+
+.list span {
+  color: #90b9ff;
+}
 .details {
   padding: 0.5rem;
   margin-left: 0.5rem;

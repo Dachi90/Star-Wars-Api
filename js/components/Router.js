@@ -7,6 +7,9 @@ import { App } from "../app.js";
 import { Planet } from "./Planet.js";
 import { Films } from "./Films.js";
 import { Species } from "./Species.js";
+import { Vehicles } from "./Vehicles.js";
+import { extraData } from "../helpers/extraData.js";
+import { Starships } from "./Starships.js";
 let page = 1;
 
 document.addEventListener("click", (e) => {
@@ -48,7 +51,6 @@ export async function Router() {
 
         for (let i = 0; i < people.results.length; i++) {
           //console.log(people.results[i]);
-          let $ul_people_films = document.createElement("ul");
           //console.log(people.results[i].homeworld);
           //console.log(people.results[i].films);
           await ajax({
@@ -58,24 +60,8 @@ export async function Router() {
               //console.log(people_planet);
             },
           });
-          for (let x = 0; x < people.results[i].films.length; x++) {
-            //console.log(people.results[i].films[x]);
-            await ajax({
-              url: people.results[i].films[x],
-              cbSuccess: (film) => {
-                //console.log(film.title);
-                let $li_people_films = document.createElement("li");
-                $li_people_films.textContent = film.title;
-                $ul_people_films.appendChild($li_people_films);
-              },
-            });
-          }
-          let temp = document.createElement("div");
-          temp.appendChild($ul_people_films);
-          let temp_List_Films = temp.innerHTML;
-          //console.log(temp_List_Films);
-          //console.log($ul_people_films);
-          html += People(people.results[i], people_planet, temp_List_Films);
+
+          html += People(people.results[i], people_planet, await extraData(people.results[i].films));
         }
         $main.innerHTML = html;
         $main.appendChild(Buttons());
@@ -90,41 +76,7 @@ export async function Router() {
         localStorage.setItem("query", JSON.stringify(planets));
 
         for (let i = 0; i < planets.results.length; i++) {
-          let $ul_planet_films = document.createElement("ul");
-          let $ul_planet_residents = document.createElement("ul");
-
-          for (let x = 0; x < planets.results[i].films.length; x++) {
-            //console.log(planets.results[i].films[x]);
-            await ajax({
-              url: planets.results[i].films[x],
-              cbSuccess: (film) => {
-                let $li_planet_films = document.createElement("li");
-                $li_planet_films.textContent = film.title;
-                $ul_planet_films.appendChild($li_planet_films);
-              },
-            });
-          }
-          let temp_film = document.createElement("div");
-          temp_film.appendChild($ul_planet_films);
-          let temp_List_Films = temp_film.innerHTML;
-
-          for (let y = 0; y < planets.results[i].residents.length; y++) {
-            //console.log(planets.results[i].residents[y]);
-            await ajax({
-              url: planets.results[i].residents[y],
-              cbSuccess: (resident) => {
-                //console.log(resident);
-                let $li_planet_resident = document.createElement("li");
-                $li_planet_resident.textContent = resident.name;
-                $ul_planet_residents.appendChild($li_planet_resident);
-              },
-            });
-          }
-          let temp_resident = document.createElement("div");
-          temp_resident.appendChild($ul_planet_residents);
-          let temp_List_Residents = temp_resident.innerHTML;
-
-          html += Planet(planets.results[i], temp_List_Films, temp_List_Residents);
+          html += Planet(planets.results[i], await extraData(planets.results[i].films), await extraData(planets.results[i].residents));
         }
         $main.innerHTML = html;
         $main.appendChild(Buttons());
@@ -136,26 +88,10 @@ export async function Router() {
     await ajax({
       url: api.FILMS + api.PAGES + page,
       cbSuccess: async (films) => {
-        console.log(films.results);
+        //console.log(films.results);
         //localStorage.setItem("query", JSON.stringify(films)); Solo hay 6 películas por lo cual no necesitaré hacer una paginación.
         for (let i = 0; i < films.results.length; i++) {
-          let $ul_characters_films = document.createElement("ul");
-          for (let x = 0; x < films.results[i].characters.length; x++) {
-            //console.log(films.results[i].characters[x]);
-            await ajax({
-              url: films.results[i].characters[x],
-              cbSuccess: (character) => {
-                //console.log(character.name);
-                let $li_characters_films = d.createElement("li");
-                $li_characters_films.textContent = character.name;
-                $ul_characters_films.appendChild($li_characters_films);
-              },
-            });
-          }
-          let temp = d.createElement("div");
-          temp.appendChild($ul_characters_films);
-          let temp_characters_list = temp.innerHTML;
-          html += Films(films.results[i], temp_characters_list);
+          html += Films(films.results[i], await extraData(films.results[i].characters));
         }
         $main.innerHTML = html;
         //$main.appendChild(Buttons());
@@ -172,51 +108,44 @@ export async function Router() {
 
         for (let i = 0; i < species.results.length; i++) {
           //console.log(species.results[i]);
-          let $ul_species_people = document.createElement("ul");
-          let $ul_species_films = document.createElement("ul");
 
-          for (let x = 0; x < species.results[i].films.length; x++) {
-            //console.log(species.results[i].films[x]);
-
-            await ajax({
-              url: species.results[i].films[x],
-              cbSuccess: (film) => {
-                let $li_species_films = document.createElement("li");
-                $li_species_films.textContent = film.title;
-                $ul_species_films.appendChild($li_species_films);
-              },
-            });
-          }
-          let temp_species_films = document.createElement("div");
-          temp_species_films.appendChild($ul_species_films);
-          let temp_species_films_list = temp_species_films.innerHTML;
-
-          for (let x = 0; x < species.results[i].people.length; x++) {
-            //console.log(species.results[i].films[x]);
-
-            await ajax({
-              url: species.results[i].people[x],
-              cbSuccess: (people) => {
-                let $li_species_people = document.createElement("li");
-                $li_species_people.textContent = people.name;
-                $ul_species_people.appendChild($li_species_people);
-              },
-            });
-          }
-          let temp_species_people = document.createElement("div");
-          temp_species_people.appendChild($ul_species_people);
-          let temp_species_people_list = temp_species_people.innerHTML;
-
-          html += Species(species.results[i], temp_species_films_list, temp_species_people_list);
+          html += Species(species.results[i], await extraData(species.results[i].films), await extraData(species.results[i].people));
         }
         $main.innerHTML = html;
         $main.appendChild(Buttons());
       },
     });
   } else if (hash == "#/vehicles") {
-    $main.innerHTML = `<h3>Vehicles</h3>`;
+    await ajax({
+      url: api.VEHICLES + api.PAGES + page,
+      cbSuccess: async (vehicles) => {
+        localStorage.setItem("query", JSON.stringify(vehicles));
+        let html = "";
+
+        for (let i = 0; i < vehicles.results.length; i++) {
+          //console.log(vehicles.results[i]);
+          html += Vehicles(vehicles.results[i], await extraData(vehicles.results[i].films));
+        }
+        $main.innerHTML = html;
+        $main.appendChild(Buttons());
+      },
+    });
   } else if (hash == "#/starships") {
-    $main.innerHTML = `<h3>Starships</h3>`;
+    await ajax({
+      url: api.STARSHIPS + api.PAGES + page,
+      cbSuccess: async (starships) => {
+        localStorage.setItem("query", JSON.stringify(starships));
+        let html = "";
+
+        for (let i = 0; i < starships.results.length; i++) {
+          console.log(starships.results[i]);
+
+          html += Starships(starships.results[i], await extraData(starships.results[i].pilots), await extraData(starships.results[i].films));
+        }
+        $main.innerHTML = html;
+        $main.appendChild(Buttons());
+      },
+    });
   }
 
   d.querySelector(".loader").style.display = "none";
