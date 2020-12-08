@@ -58,7 +58,7 @@ img {
 
 .grid-fluid {
   margin: 1rem auto 0rem auto;
-  max-width: 90%;
+  max-width: 95%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 1rem;
@@ -156,6 +156,12 @@ img {
 /* Media queries */
 @media (min-width: 980px) {
   .home {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-fluid {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
 }
